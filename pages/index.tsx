@@ -26,10 +26,10 @@ const Home: NextPage = () => {
   const [kind, setKind] = useState<string>("");
 
   const checkInput = (e: any) => {
-    const query = e.target.value;
+    const query = e.target.value.trim();
 
     if (e.key === "Backspace") {
-      if (query.trim() === "") {
+      if (query === "") {
         setLeaked(0);
         setLoading(false);
         return;
@@ -44,8 +44,6 @@ const Home: NextPage = () => {
 
       setLoading(true);
       const hash = sha256(query.toLowerCase());
-
-      console.log("🚀 ~ file: index.tsx ~ line 18 ~ checkInput ~ hash", hash);
 
       if (isNik(query)) {
         setKind("No KTP");
@@ -62,9 +60,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div
-
-    >
+    <div>
       <Head>
         <title>Leak Checker</title>
         <meta
@@ -103,7 +99,16 @@ const Home: NextPage = () => {
               />
               <p className="pl-10 pr-10">
                 {kind} &quot;{query}&quot; muncul di metranet_log data diduga
-                milik <a className="link" href="https://bisnis.tempo.co/read/1625593/26-juta-data-indihome-diduga-bocor-telkom-browsing-history-disimpan-sangat-terproteksi" target="_blank" rel="noreferrer">Telkom Indihome</a> yg bocor.
+                milik{" "}
+                <a
+                  className="link"
+                  href="https://bisnis.tempo.co/read/1625593/26-juta-data-indihome-diduga-bocor-telkom-browsing-history-disimpan-sangat-terproteksi"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Telkom Indihome
+                </a>{" "}
+                yg bocor.
               </p>
             </div>
           )}
@@ -126,7 +131,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col items-center pt-10">
           <p className="p-10 text-center md:w-2/3 bg-green-100 md:rounded-xl">
             Website ini statis tidak ada informasi yang dikirim ke server, semua
-            pemeriksaan dilakukan di lokal (browser) tanpa data sumber
+            pemeriksaan dilakukan di lokal (browser) tanpa data sumber,
             menggunakan konsep zero-knowledge proof (ZKP).
           </p>
           <p className="p-10">
@@ -137,7 +142,7 @@ const Home: NextPage = () => {
           </p>
           <div className="pt-10 pb-10 text-center">
             Copyleft &copy; 2022 Robin Syihab{" "}
-            <a className="link" href="https://twitter.com/anvie">
+            | <a className="link" href="https://twitter.com/anvie">
               @anvie
             </a>
           </div>

@@ -66,7 +66,7 @@ class MyDocument extends Document {
             property="twitter:url"
             content="https://www.leak.riset.tech"
           />
-          <meta name="twitter:title" content="leak-checker" />
+          <meta name="twitter:title" content="Leak checker" />
           <meta
             name="twitter:description"
             content="Leak checker: check your personal browsing history data"
