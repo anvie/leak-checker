@@ -91,10 +91,10 @@ const Home: NextPage = () => {
             <div className="text-red-500 pt-5 flex flex-col items-center text-center">
               <div className="text-xl font-bold">LEAK!</div>
               <Image
-                src="leak.png"
+                src="leak.jpg"
                 alt="Leak Bali"
                 width={200}
-                height={200}
+                height={250}
                 loader={imageLoader}
               />
               <p className="pl-10 pr-10">
