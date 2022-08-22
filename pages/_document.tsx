@@ -24,18 +24,18 @@ class MyDocument extends Document {
           <meta property="og:title" content="Leak Checker" />
           <meta
             property="og:description"
-            content="Website to check is your personal data leaked."
+            content="Leak checker: check your personal browsing history data"
           />
           <meta
             property="description"
-            content="Website to check is your personal data leaked."
+            content="Leak checker: check your personal browsing history data"
           />
           <meta property="og:locale" content="en_US" />
           <meta
             property="og:image"
-            content="/img/leak-checker-logo.png"
+            content="/img/leak-logo.jpg"
           />
-          <meta property="image" content="/img/leak-checker-logo.png" />
+          <meta property="image" content="/img/leak-logo.jpg" />
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="apple-touch-icon"
@@ -69,11 +69,11 @@ class MyDocument extends Document {
           <meta name="twitter:title" content="leak-checker" />
           <meta
             name="twitter:description"
-            content="Website untuk memeriksa apakah data penelusuran pribadi bocor"
+            content="Leak checker: check your personal browsing history data"
           />
           <meta
             name="twitter:image"
-            content="https://leak.riset.techimg/leak.png"
+            content="https://leak.riset.tech/img/leak-logo.jpg"
           />
           {/* --- Twitter Meta Tags ends --- */}
         </Head>
