@@ -1,8 +1,10 @@
 # Leak Checker
 
+![Leak](public/img/leak.png)
+
 Periksa apakah data browsing history anda bocor?
 
-Periksa di [https://leak.riset.tech](leak.riset.tech)
+Periksa di [leak.riset.tech](https://leak.riset.tech)
 
 Webapp ini statis tidak ada informasi yang dikirim ke server, semua
 pemeriksaan dilakukan di lokal (browser) tanpa data
@@ -15,3 +17,7 @@ npm run dev
 # or
 yarn dev
 ```
+
+## Credits
+
+Art work by [Jandi Hudowo](https://twitter.com/JHudhowo)
