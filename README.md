@@ -4,7 +4,7 @@
 
 Periksa apakah data browsing history anda bocor?
 
-Periksa di [leak.riset.tech](https://leak.riset.tech)
+Periksa di [leak.riset.tech](https://www.leak.riset.tech)
 
 Webapp ini statis tidak ada informasi yang dikirim ke server, semua
 pemeriksaan dilakukan di lokal (browser) tanpa data
@@ -18,6 +18,8 @@ npm run dev
 yarn dev
 ```
 
-## Credits
+Coded by [Robin Syihab](https://twitter.com/anvie)
 
-Art work by [Jandi Hudowo](https://twitter.com/JHudhowo)
+## Credit
+
+* Artwork by [Jandi Hudowo](https://twitter.com/JHudhowo)
