@@ -1,0 +1,50 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Helvetica Neue", Verdana, sans-serif;
+  color: #666;
+  height: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+  font-size: 1.5em;
+}
+h2 {
+  font-size: 1em;
+}
+
+.link {
+  color: rgba(69, 96, 245, 0.836);
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #PrintableSection,
+  #PrintableSection * {
+    visibility: visible;
+  }
+  #PrintableSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+
