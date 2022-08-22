@@ -7,6 +7,7 @@ import imageLoader from "../imageLoader";
 
 import { sha256 } from "js-sha256";
 import { Loading } from "../components/Loading";
+import { GithubCorner } from "../components/GithubCorner";
 
 const metranet = require("../lib/metranet.json");
 
@@ -62,7 +63,7 @@ const Home: NextPage = () => {
 
   return (
     <div
-      className={`${styles.container} pt-16 md:pt-8 flex flex-col items-center`}
+
     >
       <Head>
         <title>Leak Checker</title>
@@ -72,10 +73,10 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <GithubCorner />
       <main className={`${styles.main} text-center flex flex-col items-center`}>
-        <h1>Apakah histori penelusuranmu bocor?</h1>
-        <h2>Periksa di sini</h2>
+        <h1 className="font-semibold">Apakah histori penelusuranmu bocor?</h1>
+        <h2>Coba periksa di sini</h2>
 
         <div className="w-96 pt-10">
           <p>Periksa:</p>
@@ -83,7 +84,7 @@ const Home: NextPage = () => {
             className="shadow appearance-none border rounded w-full pl-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="query"
             type="text"
-            placeholder="Bisa berupa nama lengkap, No KTP, atau alamat IP"
+            placeholder="Bisa berupa nama lengkap atau No KTP"
             onKeyUp={checkInput}
             onClick={(e: any) => e.target.select()}
           ></input>
@@ -102,7 +103,7 @@ const Home: NextPage = () => {
               />
               <p className="pl-10 pr-10">
                 {kind} &quot;{query}&quot; muncul di metranet_log data diduga
-                milik Telkom IndiHome yg bocor.
+                milik <a className="link" href="https://bisnis.tempo.co/read/1625593/26-juta-data-indihome-diduga-bocor-telkom-browsing-history-disimpan-sangat-terproteksi" target="_blank" rel="noreferrer">Telkom Indihome</a> yg bocor.
               </p>
             </div>
           )}
@@ -125,11 +126,14 @@ const Home: NextPage = () => {
         <div className="flex flex-col items-center pt-10">
           <p className="p-10 text-center md:w-2/3 bg-green-100 md:rounded-xl">
             Website ini statis tidak ada informasi yang dikirim ke server, semua
-            pemeriksaan dilakukan di lokal (browser) tanpa data
-            sumber menggunakan konsep zero-knowledge proof (ZKP).
+            pemeriksaan dilakukan di lokal (browser) tanpa data sumber
+            menggunakan konsep zero-knowledge proof (ZKP).
           </p>
-          <p>
-            Kode sumber website ini terbuka, bisa didapatkan di <a className="link" href="https://github.com/anvie/leak-checker">Github</a>
+          <p className="p-10">
+            Kode sumber website ini terbuka dan bisa didapatkan di{" "}
+            <a className="link" href="https://github.com/anvie/leak-checker">
+              Github
+            </a>
           </p>
           <div className="pt-10 pb-10 text-center">
             Copyleft &copy; 2022 Robin Syihab{" "}
