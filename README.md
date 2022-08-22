@@ -18,7 +18,8 @@ npm run dev
 yarn dev
 ```
 
-## Credits
+Coded by [Robin Syihab](https://twitter.com/anvie)
 
-* Code by [Robin Syihab](https://twitter.com/anvie)
-* Art work by [Jandi Hudowo](https://twitter.com/JHudhowo)
+## Credit
+
+* Artwork by [Jandi Hudowo](https://twitter.com/JHudhowo)
