@@ -18,7 +18,7 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <meta property="title" content="Leak Checker" />
-          <meta property="og:url" content="https://example.com" />
+          <meta property="og:url" content="https://www.leak.riset.tech" />
           <meta property="og:type" content="website" />
 
           <meta property="og:title" content="Leak Checker" />
@@ -61,10 +61,10 @@ class MyDocument extends Document {
 
           {/* --- Twitter Meta Tags --- */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta property="twitter:domain" content="https://leak.riset.tech" />
+          <meta property="twitter:domain" content="https://www.leak.riset.tech" />
           <meta
             property="twitter:url"
-            content="https://leak.riset.tech"
+            content="https://www.leak.riset.tech"
           />
           <meta name="twitter:title" content="leak-checker" />
           <meta
@@ -73,7 +73,7 @@ class MyDocument extends Document {
           />
           <meta
             name="twitter:image"
-            content="https://leak.riset.tech/img/leak-logo.jpg"
+            content="https://www.leak.riset.tech/img/leak-logo.jpg"
           />
           {/* --- Twitter Meta Tags ends --- */}
         </Head>
