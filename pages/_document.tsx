@@ -33,9 +33,9 @@ class MyDocument extends Document {
           <meta property="og:locale" content="en_US" />
           <meta
             property="og:image"
-            content="/img/leak-logo.jpg"
+            content="https://www.leak.riset.tech/img/leak-logo.jpg"
           />
-          <meta property="image" content="/img/leak-logo.jpg" />
+          <meta property="image" content="https://www.leak.riset.tech/img/leak-logo.jpg" />
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="apple-touch-icon"
