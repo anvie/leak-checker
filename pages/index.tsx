@@ -28,19 +28,17 @@ const Home: NextPage = () => {
   const checkInput = (e: any) => {
     const query = e.target.value.trim();
 
-    if (e.key === "Backspace") {
+    if (e.key === "Enter") {
       if (query === "") {
         setLeaked(0);
         setLoading(false);
         return;
       }
-    }
 
-    if (e.key === "Enter") {
       setLeaked(0);
       setKind("Nama");
 
-      setQuery(query);
+      setQuery(query.toUpperCase());
 
       setLoading(true);
       const hash = sha256(query.toLowerCase());
@@ -141,8 +139,8 @@ const Home: NextPage = () => {
             </a>
           </p>
           <div className="pt-10 pb-10 text-center">
-            Copyleft &copy; 2022 Robin Syihab{" "}
-            | <a className="link" href="https://twitter.com/anvie">
+            Copyleft &copy; 2022 Robin Syihab |{" "}
+            <a className="link" href="https://twitter.com/anvie">
               @anvie
             </a>
           </div>
