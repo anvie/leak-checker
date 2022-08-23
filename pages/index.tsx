@@ -28,6 +28,14 @@ const Home: NextPage = () => {
   const checkInput = (e: any) => {
     const query = e.target.value.trim();
 
+    if (e.key === "Backspace") {
+      if (query === "") {
+        setLeaked(0);
+        setLoading(false);
+        return;
+      }
+    }
+
     if (e.key === "Enter") {
       if (query === "") {
         setLeaked(0);
@@ -128,9 +136,9 @@ const Home: NextPage = () => {
       <footer className={styles.footer}>
         <div className="flex flex-col items-center pt-10">
           <p className="p-10 text-center md:w-2/3 bg-green-100 md:rounded-xl">
-            Website ini statis tidak ada informasi yang dikirim ke server, semua
+            Website ini statis bisa bekerja tanpa koneksi internet sehingga aman tidak ada informasi yang dikirim ke server, semua
             pemeriksaan dilakukan di lokal (browser) tanpa data sumber,
-            menggunakan konsep zero-knowledge proof (ZKP).
+            menggunakan konsep <a className="link" href="https://en.wikipedia.org/wiki/Zero-knowledge_proof" target="_blank" rel="noreferrer">zero-knowledge proof (ZKP)</a>.
           </p>
           <p className="p-10">
             Kode sumber website ini terbuka dan bisa didapatkan di{" "}
