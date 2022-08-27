@@ -52,7 +52,7 @@ const Home: NextPage = () => {
       }
 
       setLeaked(0);
-      setLeakFrom("");
+      setLeakFrom([]);
       setKind("Nama");
 
       setQuery(query);
