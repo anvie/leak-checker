@@ -10,6 +10,9 @@ import { Loading } from "../components/Loading";
 import { GithubCorner } from "../components/GithubCorner";
 
 const metranet = require("../lib/metranet.json");
+const unipanca = require("../lib/unipanca.json");
+
+const dbs = [metranet, unipanca];
 
 const isNik = (id: string) => {
   return /^\d{16}$/.test(id);
@@ -19,11 +22,16 @@ const isIPv4 = (ip: string) => {
   return /\d*\.\d*\.\d*\.\d*/.test(ip);
 };
 
+const isEmail = (email: string) => {
+  return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)
+}
+
 const Home: NextPage = () => {
   const [leaked, setLeaked] = useState(0);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [kind, setKind] = useState<string>("");
+  const [leakFrom, setLeakFrom] = useState<string[]>([]);
 
   const checkInput = (e: any) => {
     const query = e.target.value.trim();
@@ -44,9 +52,10 @@ const Home: NextPage = () => {
       }
 
       setLeaked(0);
+      setLeakFrom("");
       setKind("Nama");
 
-      setQuery(query.toUpperCase());
+      setQuery(query);
 
       setLoading(true);
       const hash = sha256(query.toLowerCase());
@@ -57,10 +66,24 @@ const Home: NextPage = () => {
       if (isIPv4(query)) {
         setKind("No IP");
       }
+      if (isEmail(query)) {
+        setKind("Email");
+      }
 
       setTimeout(() => {
         setLoading(false);
-        setLeaked(metranet.hashes.indexOf(hash) > -1 ? 1 : 2);
+        let _leaked = 2;
+        let leakedFrom = [];
+        for (var i = 0; i < dbs.length; i++) {
+          const db = dbs[i];
+          if (db.hashes.indexOf(hash) > -1){
+            console.log("leak detected by:", db.name);
+            _leaked = 1;
+            leakedFrom.push(db.name);
+          }
+        }
+        setLeakFrom(leakedFrom);
+        setLeaked(_leaked);
       }, 500);
     }
   };
@@ -77,7 +100,7 @@ const Home: NextPage = () => {
       </Head>
       <GithubCorner />
       <main className={`${styles.main} text-center flex flex-col items-center`}>
-        <h1 className="font-semibold">Apakah histori penelusuranmu bocor?</h1>
+        <h1 className="font-semibold">Apakah data pribadi Anda bocor?</h1>
         <h2>Coba periksa di sini</h2>
 
         <div className="w-96 pt-10">
@@ -86,7 +109,7 @@ const Home: NextPage = () => {
             className="shadow appearance-none border rounded w-full pl-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="query"
             type="text"
-            placeholder="Bisa berupa nama lengkap atau No KTP"
+            placeholder="Bisa berupa nama lengkap, No KTP, atau email"
             onKeyUp={checkInput}
             onClick={(e: any) => e.target.select()}
           ></input>
@@ -94,7 +117,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col">
           {loading && <Loading className={"pt-10"} />}
           {leaked === 1 && (
-            <div className="text-red-500 pt-5 flex flex-col items-center text-center">
+            <div className="pt-5 flex flex-col items-center text-center">
               <div className="text-xl font-bold">LEAK!</div>
               <Image
                 src="leak.jpg"
@@ -103,19 +126,14 @@ const Home: NextPage = () => {
                 height={250}
                 loader={imageLoader}
               />
-              <p className="pl-10 pr-10">
-                {kind} &quot;{query}&quot; muncul di metranet_log data diduga
-                milik{" "}
-                <a
-                  className="link"
-                  href="https://bisnis.tempo.co/read/1625593/26-juta-data-indihome-diduga-bocor-telkom-browsing-history-disimpan-sangat-terproteksi"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Telkom Indihome
-                </a>{" "}
-                yg bocor.
-              </p>
+              <div className="pl-10 pr-10">
+                {kind} <span className="font-semibold">&quot;{query}&quot;</span> muncul di:
+                <ul className="text-red-500 pt-2 text-left">
+                {
+                  leakFrom.map((leak, i) => (<li key={i}>{i + 1}. {leak}.</li>))
+                }
+                </ul>
+              </div>
             </div>
           )}
           {leaked === 2 && (
