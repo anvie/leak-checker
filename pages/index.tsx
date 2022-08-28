@@ -23,8 +23,10 @@ const isIPv4 = (ip: string) => {
 };
 
 const isEmail = (email: string) => {
-  return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)
-}
+  return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
+};
 
 const Home: NextPage = () => {
   const [leaked, setLeaked] = useState(0);
@@ -76,8 +78,7 @@ const Home: NextPage = () => {
         let leakedFrom = [];
         for (var i = 0; i < dbs.length; i++) {
           const db = dbs[i];
-          if (db.hashes.indexOf(hash) > -1){
-            console.log("leak detected by:", db.name);
+          if (db.hashes.indexOf(hash) > -1) {
             _leaked = 1;
             leakedFrom.push(db.name);
           }
@@ -127,11 +128,15 @@ const Home: NextPage = () => {
                 loader={imageLoader}
               />
               <div className="pl-10 pr-10">
-                {kind} <span className="font-semibold">&quot;{query}&quot;</span> muncul di:
+                {kind}{" "}
+                <span className="font-semibold">&quot;{query}&quot;</span>{" "}
+                muncul di:
                 <ul className="text-red-500 pt-2 text-left">
-                {
-                  leakFrom.map((leak, i) => (<li key={i}>{i + 1}. {leak}.</li>))
-                }
+                  {leakFrom.map((leak, i) => (
+                    <li key={i}>
+                      {i + 1}. {leak}.
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -154,9 +159,18 @@ const Home: NextPage = () => {
       <footer className={styles.footer}>
         <div className="flex flex-col items-center pt-10">
           <p className="p-10 text-center md:w-2/3 bg-green-100 md:rounded-xl">
-            Website ini statis bisa bekerja tanpa koneksi internet sehingga aman tidak ada informasi yang keluar, semua
-            pemeriksaan dilakukan di lokal (browser) tanpa data sumber
-            menggunakan konsep <a className="link" href="https://en.wikipedia.org/wiki/Zero-knowledge_proof" target="_blank" rel="noreferrer">zero-knowledge proof (ZKP)</a>.
+            Website ini statis bisa bekerja tanpa koneksi internet sehingga aman
+            tidak ada informasi yang keluar, semua pemeriksaan dilakukan di
+            lokal (browser) tanpa data sumber menggunakan konsep{" "}
+            <a
+              className="link"
+              href="https://en.wikipedia.org/wiki/Zero-knowledge_proof"
+              target="_blank"
+              rel="noreferrer"
+            >
+              zero-knowledge proof (ZKP)
+            </a>
+            .
           </p>
           <p className="p-10">
             Kode sumber website ini terbuka dan bisa didapatkan di{" "}
