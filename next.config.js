@@ -5,6 +5,13 @@ const dotenv = require("dotenv");
 
 dotenv.config({ path: ".env" });
 
+const withPWA = require('next-pwa')({
+  
+    dest: 'public',
+    disable: process.env.NODE_ENV === 'development'
+  
+})
+
 const nextConfig = {
   reactStrictMode: true,
   sassOptions: {
@@ -21,6 +28,6 @@ const nextConfig = {
   }
 };
 
-module.exports = nextConfig;
+module.exports = withPWA(nextConfig);
 
 
