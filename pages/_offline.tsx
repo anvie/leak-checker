@@ -8,11 +8,10 @@ import imageLoader from "../imageLoader";
 import { sha256 } from "js-sha256";
 import { Loading } from "../components/Loading";
 import { GithubCorner } from "../components/GithubCorner";
+import { LoadingWave } from "../components/LoadingWave";
 
-// const metranet = require("../lib/metranet.json");
-// const unipanca = require("../lib/unipanca.json");
-const TOTAL_SIGS = 2;
-// const dbs = [];
+const DB_SIGNATURES = ["metranet.json", "unipanca.json"]
+const TOTAL_SIGS = DB_SIGNATURES.length;
 
 const isNik = (id: string) => {
   return /^\d{16}$/.test(id);
@@ -37,32 +36,27 @@ const Home: NextPage = () => {
   const [leakFrom, setLeakFrom] = useState<string[]>([]);
   const [sigs, setSigs] = useState<any[]>([]);
   const [sigCount, setSigCount] = useState(0);
-
+  const [loadSigStatus, setLoadSigStatus] = useState("");
 
   useEffect(() => {
-    console.log(
-      "🚀 ~ file: index.tsx ~ line 52 ~ useEffect ~ sigs.length",
-      sigs.length
-    );
     if (sigs.length >= TOTAL_SIGS) {
       setReady(true);
     }
   }, [sigs, sigCount]);
 
   useEffect(() => {
-    ["metranet.json", "unipanca.json"].forEach((sig) => {
-      console.log("🚀 ~ file: index.tsx ~ line 42 ~ .forEach ~ sig", sig);
+    setLoadSigStatus(`0/${TOTAL_SIGS}`);
+    DB_SIGNATURES.forEach((sig) => {
       fetch(`/sigs/${sig}`).then(async (response) => {
         let _sigs = sigs;
         const _db = await response.json();
         _sigs.push(_db);
         setSigs(_sigs);
-        console.log("sigs:", sigs);
         setSigCount(_sigs.length);
+        setLoadSigStatus(`${_sigs.length}/${TOTAL_SIGS}`);
       });
     });
   }, []);
-
 
   const checkInput = (e: any) => {
     const query = e.target.value.trim();
@@ -130,27 +124,28 @@ const Home: NextPage = () => {
       </Head>
       <GithubCorner />
       <main className={`${styles.main} text-center flex flex-col items-center`}>
-
-        <div>offline mode</div>
-
         <h1 className="font-semibold">Apakah data pribadi Anda bocor?</h1>
         <h2>Coba periksa di sini</h2>
 
-        {!ready && <div className="p-10"><Loading className="" /> <div>Loading signatures...</div></div>}
-        {ready && <div className="w-96 pt-10">
-          <p>Periksa:</p>
-          <input
-            className="shadow appearance-none border rounded w-full pl-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="query"
-            type="text"
-            placeholder="Bisa berupa nama lengkap, No KTP, atau email"
-            onKeyUp={checkInput}
-            onClick={(e: any) => e.target.select()}
-          ></input>
-        </div>}
-
-        
-
+        {!ready && (
+          <div className="p-10">
+            <LoadingWave /> <div>Loading signatures...</div>
+            [{loadSigStatus}]
+          </div>
+        )}
+        {ready && (
+          <div className="w-96 pt-10">
+            <p>Periksa:</p>
+            <input
+              className="shadow appearance-none border rounded w-full pl-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="query"
+              type="text"
+              placeholder="Bisa berupa nama lengkap, No KTP, atau email"
+              onKeyUp={checkInput}
+              onClick={(e: any) => e.target.select()}
+            ></input>
+          </div>
+        )}
 
         <div className="flex flex-col">
           {loading && <Loading className={"pt-10"} />}

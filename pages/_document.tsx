@@ -35,14 +35,14 @@ class MyDocument extends Document {
             property="og:image"
             content="https://www.leak.riset.tech/img/leak-logo.jpg"
           />
-          <meta property="image" content="https://www.leak.riset.tech/img/leak-logo.jpg" />
-          <link rel="icon" href="/favicon.ico" />
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/apple-touch-icon.png"
+          <meta
+            property="image"
+            content="https://www.leak.riset.tech/img/leak-logo.jpg"
           />
-          <link
+          <link rel="icon" href="favicon.ico" type="image/ico" />
+          <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+          <link rel="manifest" href="/manifest.json" />
+          {/* <link
             rel="icon"
             type="image/png"
             sizes="32x32"
@@ -53,19 +53,19 @@ class MyDocument extends Document {
             type="image/png"
             sizes="16x16"
             href="/favicon-16x16.png"
-          />
-          <link rel="manifest" href="/site.webmanifest" />
+          /> */}
+          {/* <link rel="manifest" href="/site.webmanifest" /> */}
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="theme-color" content="#ffffff"></meta>
 
           {/* --- Twitter Meta Tags --- */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta property="twitter:domain" content="https://www.leak.riset.tech" />
           <meta
-            property="twitter:url"
+            property="twitter:domain"
             content="https://www.leak.riset.tech"
           />
+          <meta property="twitter:url" content="https://www.leak.riset.tech" />
           <meta name="twitter:title" content="Leak checker" />
           <meta
             name="twitter:description"
@@ -87,5 +87,3 @@ class MyDocument extends Document {
 }
 
 export default MyDocument;
-
-
