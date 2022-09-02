@@ -2,15 +2,17 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.sass";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import imageLoader from "../imageLoader";
 
-import { sha256 } from "js-sha256";
+// import { sha256 } from "js-sha256";
 import { Loading } from "../components/Loading";
 import { GithubCorner } from "../components/GithubCorner";
 import { LoadingWave } from "../components/LoadingWave";
 
-const DB_SIGNATURES = ["metranet.json", "unipanca.json"]
+import { WASMContext } from "../context/WASM";
+
+const DB_SIGNATURES = ["metranet"]; //, "unipanca.json"]
 const TOTAL_SIGS = DB_SIGNATURES.length;
 
 const isNik = (id: string) => {
@@ -28,35 +30,56 @@ const isEmail = (email: string) => {
 };
 
 const Home: NextPage = () => {
+  const ctx = useContext(WASMContext);
+
   const [leaked, setLeaked] = useState(0);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [kind, setKind] = useState<string>("");
   const [leakFrom, setLeakFrom] = useState<string[]>([]);
-  const [sigs, setSigs] = useState<any[]>([]);
+  const [dbs, setDbs] = useState<any[]>([]);
   const [sigCount, setSigCount] = useState(0);
+  const [sigsCount, setSigsCount] = useState(0);
   const [loadSigStatus, setLoadSigStatus] = useState("");
 
   useEffect(() => {
-    if (sigs.length >= TOTAL_SIGS) {
+    if (dbs.length >= TOTAL_SIGS) {
       setReady(true);
     }
-  }, [sigs, sigCount]);
+  }, [dbs, sigCount]);
 
   useEffect(() => {
     setLoadSigStatus(`0/${TOTAL_SIGS}`);
     DB_SIGNATURES.forEach((sig) => {
-      fetch(`/sigs/${sig}`).then(async (response) => {
-        let _sigs = sigs;
-        const _db = await response.json();
-        _sigs.push(_db);
-        setSigs(_sigs);
-        setSigCount(_sigs.length);
-        setLoadSigStatus(`${_sigs.length}/${TOTAL_SIGS}`);
-      });
+      fetch(`/sigs/${sig}.lhash`)
+        .then((res) => res.arrayBuffer())
+        .then(async (buf) => {
+          if (!ctx.wasm) {
+            return;
+          }
+          const data = new Uint8Array(buf);
+          const count = ctx.wasm.load_lhash("metranet", data);
+          setSigsCount(sigsCount + count);
+
+          let _dbs = dbs;
+          _dbs.push(sig);
+          setDbs(_dbs);
+          setSigCount(_dbs.length);
+          setLoadSigStatus(`${_dbs.length}/${TOTAL_SIGS}`);
+        });
     });
-  }, []);
+  }, [ctx.wasm]);
+
+  useEffect(() => {
+    if (sigsCount > 0) {
+      console.log(`${sigsCount} sigs loaded`);
+    }
+  }, [sigsCount]);
+
+  if (!ctx.wasm) {
+    return <>...</>;
+  }
 
   const checkInput = (e: any) => {
     const query = e.target.value.trim();
@@ -76,6 +99,11 @@ const Home: NextPage = () => {
         return;
       }
 
+      if (!ctx.wasm) {
+        alert("WASM not loaded :( try again later");
+        return;
+      }
+
       setLeaked(0);
       setLeakFrom([]);
       setKind("Nama");
@@ -83,7 +111,7 @@ const Home: NextPage = () => {
       setQuery(query);
 
       setLoading(true);
-      const hash = sha256(query.toLowerCase());
+      // const hash = sha256(query.toLowerCase());
 
       if (isNik(query)) {
         setKind("No KTP");
@@ -99,11 +127,12 @@ const Home: NextPage = () => {
         setLoading(false);
         let _leaked = 2;
         let leakedFrom = [];
-        for (var i = 0; i < sigs.length; i++) {
-          const db = sigs[i];
-          if (db.hashes.indexOf(hash) > -1) {
+        for (var i = 0; i < dbs.length; i++) {
+          const sig = dbs[i];
+          // if (sig.hashes.indexOf(hash) > -1) {
+          if (ctx.wasm!.hash_exists(sig, query.toUpperCase())) {
             _leaked = 1;
-            leakedFrom.push(db.name);
+            leakedFrom.push(sig.name);
           }
         }
         setLeakFrom(leakedFrom);
@@ -129,8 +158,7 @@ const Home: NextPage = () => {
 
         {!ready && (
           <div className="p-10">
-            <LoadingWave /> <div>Loading signatures...</div>
-            [{loadSigStatus}]
+            <LoadingWave /> <div>Loading signatures...</div>[{loadSigStatus}]
           </div>
         )}
         {ready && (
