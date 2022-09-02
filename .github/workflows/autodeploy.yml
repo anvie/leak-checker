@@ -16,7 +16,7 @@ jobs:
           run: npm install -g yarn
         - name: Build
           run: |
-            yarn && BUILDING=true yarn generate
+            yarn && yarn build:wasm && BUILDING=true yarn generate
         - name: Deploy
           uses: peaceiris/actions-gh-pages@v3
           with:
