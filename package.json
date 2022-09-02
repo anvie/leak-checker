@@ -20,8 +20,7 @@
     "react-dom": "^17.0.2",
     "rxjs": "^7.5.5",
     "sass": "^1.49.7",
-    "styled-components": "^5.3.3",
-    "wasm": "file:wasm/pkg"
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.8",
