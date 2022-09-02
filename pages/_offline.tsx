@@ -12,7 +12,11 @@ import { LoadingWave } from "../components/LoadingWave";
 
 import { WASMContext } from "../context/WASM";
 
-const DB_SIGNATURES = ["metranet"]; //, "unipanca.json"]
+const DB_SIGNATURES = ["metranet", "unipanca"];
+const DB_DESCS:any = {
+  metranet: "Indihome Metranet log",
+  unipanca: "Universitas Pancasila database"
+}
 const TOTAL_SIGS = DB_SIGNATURES.length;
 
 const isNik = (id: string) => {
@@ -59,7 +63,7 @@ const Home: NextPage = () => {
             return;
           }
           const data = new Uint8Array(buf);
-          const count = ctx.wasm.load_lhash("metranet", data);
+          const count = ctx.wasm.load_lhash(sig, data);
           setSigsCount(sigsCount + count);
 
           let _dbs = dbs;
@@ -121,6 +125,7 @@ const Home: NextPage = () => {
       }
       if (isEmail(query)) {
         setKind("Email");
+        setQuery(query.toLowerCase());
       }
 
       setTimeout(() => {
@@ -132,7 +137,7 @@ const Home: NextPage = () => {
           // if (sig.hashes.indexOf(hash) > -1) {
           if (ctx.wasm!.hash_exists(sig, query.toUpperCase())) {
             _leaked = 1;
-            leakedFrom.push(sig.name);
+            leakedFrom.push(sig);
           }
         }
         setLeakFrom(leakedFrom);
@@ -194,7 +199,7 @@ const Home: NextPage = () => {
                 <ul className="text-red-500 pt-2 text-left">
                   {leakFrom.map((leak, i) => (
                     <li key={i}>
-                      {i + 1}. {leak}.
+                      {i + 1}. {DB_DESCS[leak]}
                     </li>
                   ))}
                 </ul>
