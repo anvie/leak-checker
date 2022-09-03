@@ -6,11 +6,6 @@ use lhash::{LhashParser, hash};
 
 use std::{sync::Mutex, collections::HashMap};
 
-#[wasm_bindgen]
-pub fn add(x: i32, y: i32) -> i32 {
-    return x + y;
-}
-
 lazy_static! {
     static ref LHASH_DATA:Mutex<HashMap<String, Vec<u64>>> = Mutex::new(HashMap::new());
 }
@@ -39,14 +34,4 @@ pub fn hash_exists(name:&str, value: &str) -> bool {
     let lhash_data = LHASH_DATA.lock().unwrap();
     let sigs = lhash_data.get(name).unwrap();
     sigs.contains(&c_hash)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::add;
-
-    #[test]
-    fn _add() {
-        assert_eq!(add(2, 2), 4);
-    }
 }
