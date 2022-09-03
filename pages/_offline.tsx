@@ -12,11 +12,12 @@ import { LoadingWave } from "../components/LoadingWave";
 
 import { WASMContext } from "../context/WASM";
 
-const DB_SIGNATURES = ["metranet", "unipanca", "bhinneka"];
+const DB_SIGNATURES = ["metranet", "unipanca", "bhinneka", "kominfo_phonereg"];
 const DB_DESCS:any = {
   metranet: "Indihome Metranet log",
   unipanca: "Universitas Pancasila database",
   bhinneka: "Bhinneka e-commerce database",
+  kominfo_phonereg: "Kominfo phone registration database",
 }
 const TOTAL_SIGS = DB_SIGNATURES.length;
 
@@ -33,6 +34,10 @@ const isEmail = (email: string) => {
     email
   );
 };
+
+const isPhone = (phone: string) => {
+  return /^(0|\+62|62)\d{9,11}$/.test(phone);
+}
 
 const Home: NextPage = () => {
   const ctx = useContext(WASMContext);
@@ -65,6 +70,7 @@ const Home: NextPage = () => {
           }
           const data = new Uint8Array(buf);
           const count = ctx.wasm.load_lhash(sig, data);
+          console.log(`Loaded ${count} signatures from ${sig}`);
           setSigsCount(sigsCount + count);
 
           let _dbs = dbs;
@@ -76,18 +82,12 @@ const Home: NextPage = () => {
     });
   }, [ctx.wasm]);
 
-  useEffect(() => {
-    if (sigsCount > 0) {
-      console.log(`${sigsCount} sigs loaded`);
-    }
-  }, [sigsCount]);
-
   if (!ctx.wasm) {
     return <>...</>;
   }
 
   const checkInput = (e: any) => {
-    const query = e.target.value.trim();
+    let query = e.target.value.trim();
 
     if (e.key === "Backspace") {
       if (query === "") {
@@ -126,6 +126,10 @@ const Home: NextPage = () => {
       if (isEmail(query)) {
         setKind("Email");
         setQuery(query.toLowerCase());
+      }
+      if (isPhone(query)) {
+        setKind("No HP");
+        query = query.replace(/^(0|\+62|62)/, "");
       }
 
       setTimeout(() => {
