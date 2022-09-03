@@ -61,6 +61,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     setLoadSigStatus(`0/${TOTAL_SIGS}`);
+    let _sigsCount = 0;
     DB_SIGNATURES.forEach((sig) => {
       fetch(`/sigs/${sig}.lhash`)
         .then((res) => res.arrayBuffer())
@@ -71,7 +72,8 @@ const Home: NextPage = () => {
           const data = new Uint8Array(buf);
           const count = ctx.wasm.load_lhash(sig, data);
           console.log(`Loaded ${count} signatures from ${sig}`);
-          setSigsCount(sigsCount + count);
+          _sigsCount += count;
+          setSigsCount(_sigsCount);
 
           let _dbs = dbs;
           _dbs.push(sig);
