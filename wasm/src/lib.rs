@@ -30,7 +30,7 @@ pub fn load_lhash(name:&str, data: &[u8]) -> u32 {
 
 #[wasm_bindgen]
 pub fn hash_exists(name:&str, value: &str) -> bool {
-    let c_hash = hash(value);
+    let c_hash = hash(&value.to_uppercase());
     let lhash_data = LHASH_DATA.lock().unwrap();
     let sigs = lhash_data.get(name).unwrap();
     sigs.contains(&c_hash)

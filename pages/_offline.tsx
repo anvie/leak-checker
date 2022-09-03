@@ -12,10 +12,11 @@ import { LoadingWave } from "../components/LoadingWave";
 
 import { WASMContext } from "../context/WASM";
 
-const DB_SIGNATURES = ["metranet", "unipanca"];
+const DB_SIGNATURES = ["metranet", "unipanca", "bhinneka"];
 const DB_DESCS:any = {
   metranet: "Indihome Metranet log",
-  unipanca: "Universitas Pancasila database"
+  unipanca: "Universitas Pancasila database",
+  bhinneka: "Bhinneka e-commerce database",
 }
 const TOTAL_SIGS = DB_SIGNATURES.length;
 
@@ -115,7 +116,6 @@ const Home: NextPage = () => {
       setQuery(query);
 
       setLoading(true);
-      // const hash = sha256(query.toLowerCase());
 
       if (isNik(query)) {
         setKind("No KTP");
@@ -134,8 +134,7 @@ const Home: NextPage = () => {
         let leakedFrom = [];
         for (var i = 0; i < dbs.length; i++) {
           const sig = dbs[i];
-          // if (sig.hashes.indexOf(hash) > -1) {
-          if (ctx.wasm!.hash_exists(sig, query.toUpperCase())) {
+          if (ctx.wasm!.hash_exists(sig, query)) {
             _leaked = 1;
             leakedFrom.push(sig);
           }
@@ -160,6 +159,7 @@ const Home: NextPage = () => {
       <main className={`${styles.main} text-center flex flex-col items-center`}>
         <h1 className="font-semibold">Apakah data pribadi Anda bocor?</h1>
         <h2>Coba periksa di sini</h2>
+        <p className="text-sm">Total database: {sigsCount}</p>
 
         {!ready && (
           <div className="p-10">
@@ -167,16 +167,20 @@ const Home: NextPage = () => {
           </div>
         )}
         {ready && (
-          <div className="w-96 pt-10">
-            <p>Periksa:</p>
+          <div className="pt-10">
+            <div className="flex w-96 pl-5 pr-5">
             <input
-              className="shadow appearance-none border rounded w-full pl-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border w-full pl-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="query"
               type="text"
               placeholder="Bisa berupa nama lengkap, No KTP, atau email"
               onKeyUp={checkInput}
               onClick={(e: any) => e.target.select()}
+              autoComplete="off"
             ></input>
+            <div className="p-2 bg-violet-400 text-white w-32 shadow hover:bg-violet-300 cursor-pointer">PERIKSA</div>
+            </div>
+            
           </div>
         )}
 
