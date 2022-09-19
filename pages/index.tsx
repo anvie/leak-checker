@@ -13,12 +13,12 @@ import { LoadingWave } from "../components/LoadingWave";
 import { WASMContext } from "../context/WASM";
 
 const DB_SIGNATURES = ["metranet", "unipanca", "bhinneka", "kominfo_phonereg"];
-const DB_DESCS:any = {
+const DB_DESCS: any = {
   metranet: "Indihome Metranet log",
   unipanca: "Universitas Pancasila database",
   bhinneka: "Bhinneka e-commerce database",
   kominfo_phonereg: "Kominfo phone registration database",
-}
+};
 const TOTAL_SIGS = DB_SIGNATURES.length;
 
 const isNik = (id: string) => {
@@ -37,7 +37,7 @@ const isEmail = (email: string) => {
 
 const isPhone = (phone: string) => {
   return /^(0|\+62|62)\d{9,11}$/.test(phone);
-}
+};
 
 const Home: NextPage = () => {
   const ctx = useContext(WASMContext);
@@ -89,66 +89,57 @@ const Home: NextPage = () => {
   }
 
   const checkInput = (e: any) => {
-    let query = e.target.value.trim();
+    e.preventDefault();
+    let query = e.target.query.value;
 
-    if (e.key === "Backspace") {
-      if (query === "") {
-        setLeaked(0);
-        setLoading(false);
-        return;
-      }
-    }
-
-    if (e.key === "Enter") {
-      if (query === "") {
-        setLeaked(0);
-        setLoading(false);
-        return;
-      }
-
-      if (!ctx.wasm) {
-        alert("WASM not loaded :( try again later");
-        return;
-      }
-
+    if (query === "") {
       setLeaked(0);
-      setLeakFrom([]);
-      setKind("Nama");
-
-      setQuery(query);
-
-      setLoading(true);
-
-      if (isNik(query)) {
-        setKind("No KTP");
-      }
-      if (isIPv4(query)) {
-        setKind("No IP");
-      }
-      if (isEmail(query)) {
-        setKind("Email");
-        setQuery(query.toLowerCase());
-      }
-      if (isPhone(query)) {
-        setKind("No HP");
-        query = query.replace(/^(0|\+62|62)/, "");
-      }
-
-      setTimeout(() => {
-        setLoading(false);
-        let _leaked = 2;
-        let leakedFrom = [];
-        for (var i = 0; i < dbs.length; i++) {
-          const sig = dbs[i];
-          if (ctx.wasm!.hash_exists(sig, query)) {
-            _leaked = 1;
-            leakedFrom.push(sig);
-          }
-        }
-        setLeakFrom(leakedFrom);
-        setLeaked(_leaked);
-      }, 500);
+      setLoading(false);
+      return;
     }
+
+    if (!ctx.wasm) {
+      alert("WASM not loaded :( try again later");
+      return;
+    }
+
+    setLeaked(0);
+    setLeakFrom([]);
+    setKind("Nama");
+
+    setQuery(query);
+
+    setLoading(true);
+
+    if (isNik(query)) {
+      setKind("No KTP");
+    }
+    if (isIPv4(query)) {
+      setKind("No IP");
+    }
+    if (isEmail(query)) {
+      setKind("Email");
+      setQuery(query.toLowerCase());
+    }
+    if (isPhone(query)) {
+      setKind("No HP");
+      query = query.replace(/^(0|\+62|62)/, "");
+    }
+
+    setTimeout(() => {
+      setLoading(false);
+      let _leaked = 2;
+      let leakedFrom = [];
+      for (var i = 0; i < dbs.length; i++) {
+        const sig = dbs[i];
+        if (ctx.wasm!.hash_exists(sig, query)) {
+          _leaked = 1;
+          leakedFrom.push(sig);
+        }
+      }
+      setLeakFrom(leakedFrom);
+      setLeaked(_leaked);
+    }, 500);
   };
 
   return (
@@ -174,19 +165,22 @@ const Home: NextPage = () => {
         )}
         {ready && (
           <div className="pt-10">
-            <div className="flex w-96 pl-5 pr-5">
-            <input
-              className="shadow appearance-none border w-full pl-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="query"
-              type="text"
-              placeholder="Bisa berupa nama lengkap, No KTP, atau email"
-              onKeyUp={checkInput}
-              onClick={(e: any) => e.target.select()}
-              autoComplete="off"
-            ></input>
-            <div className="p-2 bg-violet-400 text-white w-32 shadow hover:bg-violet-300 cursor-pointer">PERIKSA</div>
-            </div>
-            
+            <form className="flex w-96 pl-5 pr-5" onSubmit={checkInput}>
+              <input
+                className="shadow appearance-none border w-full pl-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="query"
+                type="text"
+                placeholder="Bisa berupa nama lengkap, No KTP, atau email"
+                onClick={(e: any) => e.target.select()}
+                autoComplete="off"
+              ></input>
+              <button
+                type="submit"
+                className="p-2 bg-violet-400 text-white w-32 shadow hover:bg-violet-300 cursor-pointer"
+              >
+                PERIKSA
+              </button>
+            </form>
           </div>
         )}
 
